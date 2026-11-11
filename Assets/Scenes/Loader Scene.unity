@@ -131,6 +131,8 @@ GameObject:
   - component: {fileID: 75217065}
   - component: {fileID: 75217064}
   - component: {fileID: 75217067}
+  - component: {fileID: 75217068}
+  - component: {fileID: 75217069}
   m_Layer: 0
   m_Name: BobcatS100
   m_TagString: Untagged
@@ -219,7 +221,90 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Engine
   _powerOn: 1
-  _rpm: 2300
+  _rpm: 2000
+--- !u!114 &75217068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75217063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d1b859ed56ed34a910c7cc9b1dbf00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Auxiliaries
+--- !u!114 &75217069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75217063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0e703edfdc600247aad7355d16ad850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HydraulicDrive
+  _leftWheelsInput: 0
+  _rightWheelsInput: 0
+  _isoControl: 1
+  _inputSpeed: 2
+  _driveAction:
+    m_Name: Drive
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 1e10f21a-2a58-4f4e-a4a8-69181eeac92a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: 30303601-1f86-4cdb-89ea-e76d253a8e5c
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Drive
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 95ce8cb2-e4fa-4737-ba1f-66e65b5b87a5
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Drive
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 18a9d3b0-4f6b-48cc-8778-2b1df31f26b6
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Drive
+      m_Flags: 8
+    - m_Name: left
+      m_Id: 12cfbe82-6438-4abe-86a8-6863a61f593d
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Drive
+      m_Flags: 8
+    - m_Name: right
+      m_Id: aa66e8e9-5f75-4903-a6b8-4d06727c645f
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Drive
+      m_Flags: 8
+    m_Flags: 0
+  _leftWheelColliders:
+  - {fileID: 711449488}
+  - {fileID: 920197770}
+  _rightWheelColliders:
+  - {fileID: 387937412}
+  - {fileID: 2026372146}
 --- !u!1 &188672189
 GameObject:
   m_ObjectHideFlags: 0
