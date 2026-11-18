@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 75217067}
   - component: {fileID: 75217068}
   - component: {fileID: 75217069}
+  - component: {fileID: 75217070}
   m_Layer: 0
   m_Name: BobcatS100
   m_TagString: Untagged
@@ -305,6 +306,24 @@ MonoBehaviour:
   _rightWheelColliders:
   - {fileID: 387937412}
   - {fileID: 2026372146}
+  _leftWheelMeshes:
+  - {fileID: 1843081962}
+  - {fileID: 291769780}
+  _rightWheelMeshes:
+  - {fileID: 233171314}
+  - {fileID: 1468079014}
+--- !u!114 &75217070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75217063}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a39db2e8f32964cbee8627520b803b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleSpeedometer
 --- !u!1 &188672189
 GameObject:
   m_ObjectHideFlags: 0

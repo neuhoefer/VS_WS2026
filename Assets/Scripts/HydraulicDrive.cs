@@ -6,7 +6,7 @@ public class HydraulicDrive : MonoBehaviour, IPowerConsumer
 {
     private const float MAX_POWER = 12.4f;          // kW
     private const float SPEED_MAX = 8.2f;           // km/h
-    private const float BRAKE_TORQUE = 500.0f;      // km/h
+    private const float MAX_TORQUE = 500.0f;        // Nm
 
     [Space(10)]
     [Range(-1, 1)]
@@ -20,6 +20,8 @@ public class HydraulicDrive : MonoBehaviour, IPowerConsumer
     [Space(10)]
     [SerializeField] private WheelCollider[] _leftWheelColliders = new WheelCollider[2];
     [SerializeField] private WheelCollider[] _rightWheelColliders = new WheelCollider[2];
+    [SerializeField] private Transform[] _leftWheelMeshes = new Transform[2];
+    [SerializeField] private Transform[] _rightWheelMeshes = new Transform[2];
 
     private Engine _engine;
     private float _wheelRadius;
@@ -39,6 +41,7 @@ public class HydraulicDrive : MonoBehaviour, IPowerConsumer
     private void Update()
     {
         GetInput();
+        UpdateWheels();
     }
 
     private void GetInput()
@@ -68,8 +71,7 @@ public class HydraulicDrive : MonoBehaviour, IPowerConsumer
 
     public float RequestPower()
     {
-        float input = (Mathf.Abs(_leftWheelsInput) + Mathf.Abs(_rightWheelsInput)) / 2.0f;
-        return input * MAX_POWER;
+        return (_leftWheelsInput != 0f || _rightWheelsInput != 0f) ? MAX_POWER : 0.0f;
     }
 
     public void ReceivePower(float grantedPower)
@@ -80,20 +82,45 @@ public class HydraulicDrive : MonoBehaviour, IPowerConsumer
     private void ApplyTorque(float grantedPower)
     {
         float currentSpeed = GetCurrentSpeedMS();
+        //Debug.Log("Current speed: " + Mathf.Round(currentSpeed * 3.6f * 100f) / 100f);
         float targetSpeed = GetTargetSpeedMS();
 
-        float torque = grantedPower * 50.0f;
+        float targetOmega = targetSpeed / _wheelRadius;
+        float torque = targetOmega != 0.0f ? Mathf.Min((grantedPower * 1000.0f) / (targetOmega * 4.0f), MAX_TORQUE) : 0.0f;
 
-        ApplyTorqueToWheelColliders(_leftWheelColliders, _leftWheelsInput, torque);
-        ApplyTorqueToWheelColliders(_rightWheelColliders, _rightWheelsInput, torque);
+        ApplyTorqueToWheelColliders(_leftWheelColliders, _leftWheelsInput, torque, targetSpeed - currentSpeed);
+        ApplyTorqueToWheelColliders(_rightWheelColliders, _rightWheelsInput, torque, targetSpeed - currentSpeed);
     }
 
-    private void ApplyTorqueToWheelColliders(WheelCollider[] colliders, float input, float torque)
+    private void ApplyTorqueToWheelColliders(WheelCollider[] colliders, float input, float torque, float speedDelta)
     {
         foreach(WheelCollider wc in colliders)
         {
-            wc.motorTorque = Mathf.Sign(input) * torque;
-            wc.brakeTorque = 0.0f;
+            if (speedDelta > 0.05f && input != 0f)
+            {
+                wc.motorTorque = Mathf.Sign(input) * torque;
+                wc.brakeTorque = 0.0f;
+            }
+            else
+            {
+                wc.motorTorque = 0.0f;
+                wc.brakeTorque = MAX_TORQUE;
+            }
         }
+    }
+
+    private void UpdateWheels()
+    {
+        for (int i = 0; i < _leftWheelColliders.Length; i++)
+            UpdateWheel(_leftWheelColliders[i], _leftWheelMeshes[i]);
+        for (int i = 0; i < _rightWheelColliders.Length; i++)
+            UpdateWheel(_rightWheelColliders[i], _rightWheelMeshes[i]);
+    }
+
+    private void UpdateWheel(WheelCollider collider, Transform wheel)
+    {
+        collider.GetWorldPose(out var pos, out var rot);
+        wheel.position = pos;
+        wheel.rotation = rot;
     }
 }
